@@ -15,7 +15,8 @@ module Danger
   #      scheme: 'EasyPeasy',
   #      workspace: 'Example/EasyPeasy.xcworkspace',
   #      exclude_targets: 'Demo.app',
-  #      minimum_coverage_percentage: 90
+  #      minimum_coverage_percentage: 90,
+  #      minimum_file_coverage_percentage: 10
   #    )
   #
   # @tags xcode, coverage, xccoverage, tests, ios, xcov
@@ -79,6 +80,18 @@ module Danger
       threshold = Xcov.config[:minimum_coverage_percentage].to_i
       if !threshold.nil? && (report.coverage * 100) < threshold
         fail("Code coverage under minimum of #{threshold}%")
+      end
+
+      # Notify failure if minimum file coverage hasn't been reached
+      file_threshold = Xcov.config[:minimum_file_coverage_percentage].to_i
+      if !file_threshold.nil?
+        report.targets.each do |target|
+          target.files.each do |file|
+            if (file.coverage * 100) < file_threshold
+              fail("Class coverage is below minimum. Improve to at least 10 #{file_threshold}%")
+            end
+          end
+        end
       end
     end
 
