@@ -117,6 +117,7 @@ module Danger
     def convert_options(options)
       converted_options = options.dup
       converted_options.delete(:verbose)
+      converted_options.delete(:minimum_file_coverage_percentage)
       converted_options
     end
 
