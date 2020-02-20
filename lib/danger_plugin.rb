@@ -88,7 +88,7 @@ module Danger
         report.targets.each do |target|
           target.files.each do |file|
             if (file.coverage * 100) < file_threshold
-              fail("Class coverage is below minimum. Improve to at least 10 #{file_threshold}%")
+              fail("Class coverage is below minimum. Improve to at least #{file_threshold}%")
             end
           end
         end
